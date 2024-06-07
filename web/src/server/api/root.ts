@@ -18,6 +18,7 @@ import { posthogIntegrationRouter } from "@/src/features/posthog-integration/pos
 import { llmApiKeyRouter } from "@/src/features/llm-api-key/server/router";
 import { scoreConfigsRouter } from "@/src/server/api/routers/scoreConfigs";
 import { publicRouter } from "@/src/server/api/routers/public";
+import { WebhooksQueueManager } from "@/src/features/webhooks";
 
 /**
  * This is the primary router for your server.
@@ -48,3 +49,5 @@ export const appRouter = createTRPCRouter({
 
 // export type definition of API
 export type AppRouter = typeof appRouter;
+
+export const webhooksQueueManager = WebhooksQueueManager.instance

@@ -286,11 +286,11 @@ async function main() {
             input:
               Math.random() > 0.3
                 ? [
-                    {
-                      role: "user",
-                      content: "How can i create a React component?",
-                    },
-                  ]
+                  {
+                    role: "user",
+                    content: "How can i create a React component?",
+                  },
+                ]
                 : undefined,
             expectedOutput:
               Math.random() > 0.3
@@ -324,7 +324,7 @@ async function main() {
           );
           const observation =
             relevantObservations[
-              Math.floor(Math.random() * relevantObservations.length)
+            Math.floor(Math.random() * relevantObservations.length)
             ];
 
           await prisma.datasetRunItems.create({
@@ -339,6 +339,8 @@ async function main() {
       }
     }
   }
+
+  await generateWebhooks(project1);
 }
 
 main()
@@ -488,9 +490,9 @@ function createObjects(
     const session =
       Math.random() > 0.3
         ? {
-            id: `session-${i % 3}`,
-            projectId: projectId,
-          }
+          id: `session-${i % 3}`,
+          projectId: projectId,
+        }
         : undefined;
 
     if (session) {
@@ -533,31 +535,31 @@ function createObjects(
     const traceScores = [
       ...(Math.random() > 0.5
         ? [
-            {
-              traceId: trace.id,
-              name: annotationScoreName,
-              value: Math.floor(Math.random() * 3) - 1,
-              timestamp: traceTs,
-              source: ScoreSource.ANNOTATION,
-              projectId,
-              authorUserId: `user-${i}`,
-              dataType: ScoreDataType.NUMERIC,
-              ...(configId ? { configId } : {}),
-            },
-          ]
+          {
+            traceId: trace.id,
+            name: annotationScoreName,
+            value: Math.floor(Math.random() * 3) - 1,
+            timestamp: traceTs,
+            source: ScoreSource.ANNOTATION,
+            projectId,
+            authorUserId: `user-${i}`,
+            dataType: ScoreDataType.NUMERIC,
+            ...(configId ? { configId } : {}),
+          },
+        ]
         : []),
       ...(Math.random() > 0.7
         ? [
-            {
-              traceId: trace.id,
-              name: "sentiment",
-              value: Math.floor(Math.random() * 10) - 5,
-              timestamp: traceTs,
-              source: ScoreSource.API,
-              projectId,
-              dataType: ScoreDataType.NUMERIC,
-            },
-          ]
+          {
+            traceId: trace.id,
+            name: "sentiment",
+            value: Math.floor(Math.random() * 10) - 5,
+            timestamp: traceTs,
+            source: ScoreSource.API,
+            projectId,
+            dataType: ScoreDataType.NUMERIC,
+          },
+        ]
         : []),
     ];
 
@@ -590,11 +592,11 @@ function createObjects(
         ...(existingSpanIds.length === 0 || Math.random() > 0.5
           ? {}
           : {
-              parentObservationId:
-                existingSpanIds[
-                  Math.floor(Math.random() * existingSpanIds.length)
-                ],
-            }),
+            parentObservationId:
+              existingSpanIds[
+              Math.floor(Math.random() * existingSpanIds.length)
+              ],
+          }),
       };
 
       observations.push(span);
@@ -605,23 +607,23 @@ function createObjects(
         // random start and end times within span
         const generationTsStart = new Date(
           spanTsStart.getTime() +
-            Math.floor(
-              Math.random() * (spanTsEnd.getTime() - spanTsStart.getTime())
-            )
+          Math.floor(
+            Math.random() * (spanTsEnd.getTime() - spanTsStart.getTime())
+          )
         );
         const generationTsEnd = new Date(
           generationTsStart.getTime() +
-            Math.floor(
-              Math.random() *
-                (spanTsEnd.getTime() - generationTsStart.getTime())
-            )
+          Math.floor(
+            Math.random() *
+            (spanTsEnd.getTime() - generationTsStart.getTime())
+          )
         );
         // somewhere in the middle
         const generationTsCompletionStart = new Date(
           generationTsStart.getTime() +
-            Math.floor(
-              (generationTsEnd.getTime() - generationTsStart.getTime()) / 3
-            )
+          Math.floor(
+            (generationTsEnd.getTime() - generationTsStart.getTime()) / 3
+          )
         );
 
         const promptTokens = Math.floor(Math.random() * 1000) + 300;
@@ -641,9 +643,9 @@ function createObjects(
         const model = models[Math.floor(Math.random() * models.length)];
         const promptId =
           promptIds.get(projectId)![
-            Math.floor(
-              Math.random() * Math.floor(promptIds.get(projectId)!.length / 2)
-            )
+          Math.floor(
+            Math.random() * Math.floor(promptIds.get(projectId)!.length / 2)
+          )
           ];
 
         const generation = {
@@ -659,30 +661,30 @@ function createObjects(
           input:
             Math.random() > 0.5
               ? [
-                  {
-                    role: "system",
-                    content: "Be a helpful assistant",
-                  },
-                  {
-                    role: "user",
-                    content: "How can i create a React component?",
-                  },
-                ]
-              : {
-                  input: "How can i create a React component?",
-                  retrievedDocuments: [
-                    {
-                      title: "How to create a React component",
-                      url: "https://www.google.com",
-                      description: "A guide to creating React components",
-                    },
-                    {
-                      title: "React component creation",
-                      url: "https://www.google.com",
-                      description: "A guide to creating React components",
-                    },
-                  ],
+                {
+                  role: "system",
+                  content: "Be a helpful assistant",
                 },
+                {
+                  role: "user",
+                  content: "How can i create a React component?",
+                },
+              ]
+              : {
+                input: "How can i create a React component?",
+                retrievedDocuments: [
+                  {
+                    title: "How to create a React component",
+                    url: "https://www.google.com",
+                    description: "A guide to creating React components",
+                  },
+                  {
+                    title: "React component creation",
+                    url: "https://www.google.com",
+                    description: "A guide to creating React components",
+                  },
+                ],
+              },
           output: {
             completion: `Creating a React component can be done in two ways: as a functional component or as a class component. Let's start with a basic example of both.
 
@@ -764,9 +766,9 @@ function createObjects(
           // random start time within span
           const eventTs = new Date(
             spanTsStart.getTime() +
-              Math.floor(
-                Math.random() * (spanTsEnd.getTime() - spanTsStart.getTime())
-              )
+            Math.floor(
+              Math.random() * (spanTsEnd.getTime() - spanTsStart.getTime())
+            )
           );
 
           events.push({
@@ -1053,4 +1055,49 @@ async function generateConfigs(project: Project) {
   }
 
   return configNameAndId;
+}
+
+async function generateWebhooks(project: Project) {
+  const webhookEndpoints = [];
+
+  if (process.env.PROJECT_WEBHOOK_ENDPOINT) {
+    webhookEndpoints.push({
+      projectId: project.id,
+      createdBy: "user-1",
+      name: "Example Webhook",
+      url: process.env.PROJECT_WEBHOOK_ENDPOINT,
+      apiVersion: '*',
+      eventTypes: ['prompt.created', 'prompt.updated', 'prompt.deleted'],
+      enabled: true,
+      auth: {
+        kind: 'Bearer',
+        data: {
+          token: 'secret-token'
+        }
+      }
+    })
+  }
+
+  for (const webhookEndpoint of webhookEndpoints) {
+
+    await prisma.projectWebhookEndpoint.upsert({
+      where: {
+        url: webhookEndpoint.url,
+        projectId: webhookEndpoint.projectId,
+      },
+      create: {
+        projectId: webhookEndpoint.projectId,
+        enabled: webhookEndpoint.enabled,
+        name: webhookEndpoint.name,
+        eventTypes: webhookEndpoint.eventTypes,
+        apiVersion: webhookEndpoint.apiVersion,
+        url: webhookEndpoint.url,
+        auth: webhookEndpoint.auth,
+      },
+      update: {
+        url: webhookEndpoint.url,
+        auth: webhookEndpoint.auth,
+      },
+    });
+  }
 }

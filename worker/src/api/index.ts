@@ -7,15 +7,16 @@ import { redis } from "../redis/redis";
 import { randomUUID } from "crypto";
 import basicAuth from "express-basic-auth";
 import { env } from "../env";
-import { QueueJobs, QueueName, TQueueJobTypes } from "@langfuse/shared";
+import { QueueJobs, QueueName, TQueueJobTypes, ProjectWebhookEndpoint } from "@langfuse/shared";
 import { prisma } from "@langfuse/shared/src/db";
+import EventsBridgePostHandler from './handlers/event-bridge/post.route'
 
 const router = express.Router();
 
 export const evalQueue = redis
   ? new Queue<TQueueJobTypes[QueueName.TraceUpsert]>(QueueName.TraceUpsert, {
-      connection: redis,
-    })
+    connection: redis,
+  })
   : null;
 
 const eventBody = z.array(
@@ -81,6 +82,14 @@ router
       status: "success",
     });
   });
+
+router
+  .use(
+    basicAuth({
+      users: { admin: env.LANGFUSE_WORKER_PASSWORD },
+    })
+  )
+  .post<{}, EventsResponse>("/event_bridge/events", EventsBridgePostHandler);
 
 router.use("/emojis", emojis);
 

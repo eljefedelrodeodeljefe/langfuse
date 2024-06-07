@@ -18,6 +18,7 @@ describe("/api/public/metrics/daily API Endpoint", () => {
       userId: "user-daily-metrics",
       projectId: "project-daily-metrics",
     });
+
     await makeAPICall("POST", "/api/public/traces", {
       id: traceId2,
       timestamp: "2021-01-02T00:00:00.000Z",
