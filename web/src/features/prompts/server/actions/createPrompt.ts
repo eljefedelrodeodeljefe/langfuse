@@ -2,7 +2,10 @@ import {
   type CreatePromptTRPCType,
   PromptType,
 } from "@/src/features/prompts/server/utils/validation";
+import * as Sentry from "@sentry/nextjs";
 import { ValidationError } from "@langfuse/shared";
+import { brokerEvents, EventsBroker } from "@/src/events-broker";
+import { LangfusePrompt } from "@/src/entities";
 import { jsonSchema } from "@langfuse/shared";
 import { type PrismaClient } from "@langfuse/shared/src/db";
 import { LATEST_PROMPT_LABEL } from "@/src/features/prompts/constants";
@@ -83,6 +86,16 @@ export const createPrompt = async ({
     );
 
   const [createdPrompt] = await prisma.$transaction(create);
+
+  try {
+    EventsBroker.dispatch(brokerEvents.BrokerEventPromptCreated.create({
+      payload: {
+        object: LangfusePrompt.ofStruct(createdPrompt)
+      }
+    }))
+  } catch (error) {
+    Sentry.captureException(error);
+  }
 
   return createdPrompt;
 };

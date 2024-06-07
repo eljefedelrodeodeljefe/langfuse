@@ -99,8 +99,8 @@ export const TextPromptSchema = z.object({
 
 export type TextPromptType =
   z.infer<typeof TextPromptSchema> extends Prompt
-    ? z.infer<typeof TextPromptSchema>
-    : never;
+  ? z.infer<typeof TextPromptSchema>
+  : never;
 
 export const ChatPromptSchema = z.object({
   id: z.string(),
@@ -119,9 +119,13 @@ export const ChatPromptSchema = z.object({
 
 export type ChatPromptType =
   z.infer<typeof ChatPromptSchema> extends Prompt
-    ? z.infer<typeof ChatPromptSchema>
-    : never;
+  ? z.infer<typeof ChatPromptSchema>
+  : never;
 
+/**
+ * please be aware of [following](../../../../events-broker/README.md) dependency to this schema and type with and intent 
+ * to change in the future. The implementation there is copy pasted
+ */
 export const PromptSchema = z.union([TextPromptSchema, ChatPromptSchema]);
 export type ValidatedPrompt = z.infer<typeof PromptSchema>;
 

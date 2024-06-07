@@ -313,6 +313,18 @@ export type ProjectMembership = {
     created_at: Generated<Timestamp>;
     updated_at: Generated<Timestamp>;
 };
+export type ProjectWebhookEndpoint = {
+    project_id: string;
+    created_at: Generated<Timestamp>;
+    updated_at: Generated<Timestamp>;
+    name: string | null;
+    enabled: boolean;
+    url: string;
+    max_api_version: string | null;
+    event_types: string[];
+    auth: unknown | null;
+    analytics: unknown | null;
+};
 export type Prompt = {
     id: string;
     created_at: Generated<Timestamp>;
@@ -453,6 +465,7 @@ export type DB = {
     observations_view: ObservationView;
     posthog_integrations: PosthogIntegration;
     project_memberships: ProjectMembership;
+    project_webhook_endpoints: ProjectWebhookEndpoint;
     projects: Project;
     prompts: Prompt;
     score_configs: ScoreConfig;

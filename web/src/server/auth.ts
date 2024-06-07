@@ -214,7 +214,7 @@ const extendedPrismaAdapter: Adapter = {
     if (!profile.email) {
       throw new Error(
         "Cannot create db user as login profile does not contain an email: " +
-          JSON.stringify(profile),
+        JSON.stringify(profile),
       );
     }
 
@@ -280,19 +280,19 @@ export async function getAuthOptions(): Promise<NextAuthOptions> {
           user:
             dbUser !== null
               ? {
-                  ...session.user,
-                  id: dbUser.id,
-                  name: dbUser.name,
-                  email: dbUser.email,
-                  image: dbUser.image,
-                  admin: dbUser.admin,
-                  projects: dbUser.projectMemberships.map((membership) => ({
-                    id: membership.project.id,
-                    name: membership.project.name,
-                    role: membership.role,
-                  })),
-                  featureFlags: parseFlags(dbUser.featureFlags),
-                }
+                ...session.user,
+                id: dbUser.id,
+                name: dbUser.name,
+                email: dbUser.email,
+                image: dbUser.image,
+                admin: dbUser.admin,
+                projects: dbUser.projectMemberships.map((membership) => ({
+                  id: membership.project.id,
+                  name: membership.project.name,
+                  role: membership.role,
+                })),
+                featureFlags: parseFlags(dbUser.featureFlags),
+              }
               : null,
         };
       },
@@ -323,8 +323,8 @@ export async function getAuthOptions(): Promise<NextAuthOptions> {
       error: "/auth/error",
       ...(env.NEXT_PUBLIC_LANGFUSE_CLOUD_REGION
         ? {
-            newUser: "/onboarding",
-          }
+          newUser: "/onboarding",
+        }
         : {}),
     },
     cookies: {

@@ -92,29 +92,30 @@ model VerificationToken {
 }
 
 model Project {
-    id                 String                 @id @default(cuid())
-    createdAt          DateTime               @default(now()) @map("created_at")
-    updatedAt          DateTime               @default(now()) @updatedAt @map("updated_at")
-    name               String
-    cloudConfig        Json?                  @map("cloud_config") // Langfuse Cloud, for zod schema see projectsRouter.ts
-    projectMembers     ProjectMembership[]
-    traces             Trace[]
-    observations       Observation[]
-    apiKeys            ApiKey[]
-    dataset            Dataset[]
-    RawEvents          Events[]
-    invitations        MembershipInvitation[]
-    sessions           TraceSession[]
-    Prompt             Prompt[]
-    Model              Model[]
-    AuditLog           AuditLog[]
-    EvalTemplate       EvalTemplate[]
-    JobConfiguration   JobConfiguration[]
-    JobExecution       JobExecution[]
-    LlmApiKeys         LlmApiKeys[]
-    PosthogIntegration PosthogIntegration[]
-    Score              Score[]
-    scoreConfig        ScoreConfig[]
+    id                     String                   @id @default(cuid())
+    createdAt              DateTime                 @default(now()) @map("created_at")
+    updatedAt              DateTime                 @default(now()) @updatedAt @map("updated_at")
+    name                   String
+    cloudConfig            Json?                    @map("cloud_config") // Langfuse Cloud, for zod schema see projectsRouter.ts
+    projectMembers         ProjectMembership[]
+    traces                 Trace[]
+    observations           Observation[]
+    apiKeys                ApiKey[]
+    dataset                Dataset[]
+    RawEvents              Events[]
+    invitations            MembershipInvitation[]
+    sessions               TraceSession[]
+    Prompt                 Prompt[]
+    Model                  Model[]
+    AuditLog               AuditLog[]
+    EvalTemplate           EvalTemplate[]
+    JobConfiguration       JobConfiguration[]
+    JobExecution           JobExecution[]
+    LlmApiKeys             LlmApiKeys[]
+    PosthogIntegration     PosthogIntegration[]
+    Score                  Score[]
+    scoreConfig            ScoreConfig[]
+    ProjectWebhookEndpoint ProjectWebhookEndpoint[]
 
     @@map("projects")
 }
@@ -776,4 +777,22 @@ model PosthogIntegration {
 
     @@index([projectId])
     @@map("posthog_integrations")
+}
+
+model ProjectWebhookEndpoint {
+    projectId String   @id @map("project_id")
+    project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+    name       String?
+    enabled    Boolean
+    url        String
+    apiVersion String?  @map("max_api_version")
+    eventTypes String[] @map("event_types")
+    auth       Json?
+    analytics  Json?
+
+    @@index([projectId])
+    @@map("project_webhook_endpoints")
 }
